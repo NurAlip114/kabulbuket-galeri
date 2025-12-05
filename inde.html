@@ -1,0 +1,970 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Buket Uang - Blooming Memories</title>
+    <style>
+        /* Sama dengan CSS yang Anda berikan */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        /* Animated Bubbles Background */
+        .bubble {
+            position: fixed;
+            bottom: -100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: rise 15s infinite ease-in;
+            z-index: -1;
+        }
+        
+        @keyframes rise {
+            0% {
+                bottom: -100px;
+                transform: translateX(0);
+            }
+            50% {
+                transform: translateX(100px);
+            }
+            100% {
+                bottom: 110vh;
+                transform: translateX(-100px);
+            }
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            animation: fadeInDown 1s ease;
+        }
+        
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .header h1 {
+            color: white;
+            margin-bottom: 10px;
+            font-size: 2.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 1.1rem;
+        }
+        
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 30px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            animation: fadeInUp 0.8s ease backwards;
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            position: relative;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+            transform: translateX(-100%);
+            transition: transform 0.6s;
+            z-index: 1;
+        }
+        
+        .card:hover::before {
+            transform: translateX(100%);
+        }
+        
+        .card:nth-child(1) { animation-delay: 0.1s; }
+        .card:nth-child(2) { animation-delay: 0.2s; }
+        .card:nth-child(3) { animation-delay: 0.3s; }
+        .card:nth-child(4) { animation-delay: 0.4s; }
+        .card:nth-child(5) { animation-delay: 0.5s; }
+        .card:nth-child(6) { animation-delay: 0.6s; }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .card:hover {
+            transform: translateY(-15px) scale(1.02);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+        
+        .card-image {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+        
+        .card-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(0,0,0,0) 70%, rgba(0,0,0,0.5) 100%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .card:hover .card-image::after {
+            opacity: 1;
+        }
+        
+        .card-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .card:hover .card-image img {
+            transform: scale(1.1) rotate(2deg);
+        }
+        
+        .badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: bold;
+            color: white;
+            animation: pulse 2s infinite;
+            z-index: 2;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .badge.best-seller {
+            background: linear-gradient(45deg, #ff6b6b, #ff8e53);
+        }
+        
+        .badge.limited {
+            background: linear-gradient(45deg, #4ecdc4, #44a08d);
+        }
+        
+        .card-content {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .card-category {
+            color: #fcb69f;
+            font-size: 0.9rem;
+            margin-bottom: 5px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .card-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #2c3e50;
+            font-weight: bold;
+        }
+        
+        .card-price {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #fcb69f;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .card-price::after {
+            content: '';
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: #fcb69f;
+            transition: width 0.3s;
+        }
+        
+        .card:hover .card-price::after {
+            width: 100%;
+        }
+        
+        .card-rating {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .stars {
+            color: #ffd700;
+            margin-right: 10px;
+            font-size: 1.1rem;
+        }
+        
+        .rating-count {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        .card-description {
+            color: #5a6c7d;
+            margin-bottom: 25px;
+            line-height: 1.6;
+            flex-grow: 1;
+        }
+        
+        .card-button {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(45deg, #ffecd2, #fcb69f);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: left 0.5s;
+        }
+        
+        .card-button:hover::before {
+            left: 100%;
+        }
+        
+        .card-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(252, 182, 159, 0.3);
+        }
+        
+        /* Notification Styles */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: -400px;
+            background: white;
+            padding: 20px 25px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: right 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            z-index: 2000;
+        }
+        
+        .notification.show {
+            right: 20px;
+        }
+        
+        .notification-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(45deg, #25d366, #128c7e);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: bounce 1s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .notification-text {
+            flex: 1;
+        }
+        
+        .notification-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .notification-message {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+        }
+        
+        /* Modal Styles with Swipe */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.9);
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+        }
+        
+        .modal-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .image-carousel {
+            position: relative;
+            max-width: 90%;
+            max-height: 90%;
+            overflow: hidden;
+            border-radius: 15px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+        }
+        
+        .carousel-container {
+            display: flex;
+            transition: transform 0.3s ease;
+        }
+        
+        .carousel-image {
+            width: 100%;
+            height: auto;
+            max-height: 80vh;
+            object-fit: contain;
+            user-select: none;
+            -webkit-user-drag: none;
+        }
+        
+        .carousel-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.8);
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        
+        .carousel-nav:hover {
+            background: rgba(255, 255, 255, 1);
+            transform: translateY(-50%) scale(1.1);
+        }
+        
+        .carousel-prev {
+            left: 20px;
+        }
+        
+        .carousel-next {
+            right: 20px;
+        }
+        
+        .carousel-indicators {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+        
+        .indicator {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .indicator.active {
+            background: white;
+            transform: scale(1.3);
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            z-index: 100;
+        }
+        
+        .close-modal:hover {
+            transform: rotate(90deg) scale(1.2);
+            color: #ff6b6b;
+        }
+        
+        /* Floating Elements */
+        .floating-element {
+            position: fixed;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            pointer-events: none;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        /* Mobile Responsive Styles */
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+            
+            .gallery {
+                grid-template-columns: 1fr;
+                gap: 25px;
+            }
+            
+            .card {
+                max-width: 100%;
+                margin: 0 auto;
+            }
+            
+            .card-image {
+                height: 220px;
+            }
+            
+            .card-content {
+                padding: 20px;
+            }
+            
+            .card-title {
+                font-size: 1.3rem;
+            }
+            
+            .card-price {
+                font-size: 1.2rem;
+            }
+            
+            .card-description {
+                font-size: 0.9rem;
+            }
+            
+            .notification {
+                right: -100%;
+                width: calc(100% - 40px);
+                padding: 15px 20px;
+            }
+            
+            .notification.show {
+                right: 20px;
+            }
+            
+            .carousel-nav {
+                width: 40px;
+                height: 40px;
+                font-size: 18px;
+            }
+            
+            .carousel-prev {
+                left: 10px;
+            }
+            
+            .carousel-next {
+                right: 10px;
+            }
+        }
+        
+        /* Tablet Responsive Styles */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .gallery {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        /* Back button style */
+        .back-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: linear-gradient(45deg, #ffecd2, #fcb69f);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+        
+        .back-button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Bubbles -->
+    <div class="bubble" style="width: 80px; height: 80px; left: 10%; animation-delay: 0s;"></div>
+    <div class="bubble" style="width: 60px; height: 60px; left: 30%; animation-delay: 2s;"></div>
+    <div class="bubble" style="width: 100px; height: 100px; left: 50%; animation-delay: 4s;"></div>
+    <div class="bubble" style="width: 40px; height: 40px; left: 70%; animation-delay: 6s;"></div>
+    <div class="bubble" style="width: 70px; height: 70px; left: 90%; animation-delay: 8s;"></div>
+    
+    <!-- Floating Elements -->
+    <div class="floating-element" style="top: 20%; left: 10%;"></div>
+    <div class="floating-element" style="top: 60%; right: 10%; animation-delay: 2s;"></div>
+    <div class="floating-element" style="top: 40%; left: 80%; animation-delay: 4s;"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Buket Uang</h1>
+            <p>Hadiah Unik dan Berkesan untuk Momen Spesial Anda</p>
+        </div>
+        
+        <div class="gallery">
+            <!-- Buket Matahari - Rp 18.000 -->
+            <div class="card">
+                <div class="card-image" onclick="openModal(['img/matahari.jpg'], 'Buket Matahari', 18000)">
+                    <img src="img/matahari.jpg" alt="Buket Matahari">
+                    <span class="badge best-seller">Best Seller</span>
+                </div>
+                <div class="card-content">
+                    <div class="card-category">Money Gift</div>
+                    <h3 class="card-title">Buket Matahari</h3>
+                    <div class="card-price">Rp18.000</div>
+                    <div class="card-rating">
+                        <div class="stars">★★★★★</div>
+                        <div class="rating-count">128 ulasan</div>
+                    </div>
+                    <p class="card-description">Buket uang dengan desain matahari yang ceria dan penuh energi. Sempurna untuk memberikan kehangatan dan kebahagiaan kepada orang tersayang.</p>
+                    <button class="card-button" onclick="handleWhatsAppClick('Buket Matahari', 18000)">TANYAKAN SEKARANG</button>
+                </div>
+            </div>
+            
+            <!-- Buket Pink - Rp 18.000 -->
+            <div class="card">
+                <div class="card-image" onclick="openModal(['img/pink.jpg'], 'Buket Pink Blossom', 18000)">
+                    <img src="img/pink.jpg" alt="Buket Pink Blossom">
+                </div>
+                <div class="card-content">
+                    <div class="card-category">Money Gift</div>
+                    <h3 class="card-title">Buket Pink Blossom</h3>
+                    <div class="card-price">Rp18.000</div>
+                    <div class="card-rating">
+                        <div class="stars">★★★★☆</div>
+                        <div class="rating-count">95 ulasan</div>
+                    </div>
+                    <p class="card-description">Buket uang dengan nuansa pink yang manis dan romantis. Cocok untuk hadiah ulang tahun atau anniversary yang spesial.</p>
+                    <button class="card-button" onclick="handleWhatsAppClick('Buket Pink Blossom', 18000)">TANYAKAN SEKARANG</button>
+                </div>
+            </div>
+            
+            <!-- Buket Bilu - Rp 18.000 -->
+            <div class="card">
+                <div class="card-image" onclick="openModal(['img/bilu.jpg'], 'Buket Light Blue', 18000)">
+                    <img src="img/bilu.jpg" alt="Buket Light Blue">
+                </div>
+                <div class="card-content">
+                    <div class="card-category">Money Gift</div>
+                    <h3 class="card-title">Buket Light Blue</h3>
+                    <div class="card-price">Rp18.000</div>
+                    <div class="card-rating">
+                        <div class="stars">★★★★☆</div>
+                        <div class="rating-count">87 ulasan</div>
+                    </div>
+                    <p class="card-description">Buket uang dengan warna biru muda yang menenangkan dan elegan. Hadiah yang sempurna untuk memberikan ketenangan dan kedamaian.</p>
+                    <button class="card-button" onclick="handleWhatsAppClick('Buket Light Blue', 18000)">TANYAKAN SEKARANG</button>
+                </div>
+            </div>
+            
+            <!-- Buket Sky Blue - Rp 45.000 -->
+            <div class="card">
+                <div class="card-image" onclick="openModal(['img/biru.jpg'], 'Buket Sky Blue', 45000)">
+                    <img src="img/biru.jpg" alt="Buket Sky Blue">
+                    <span class="badge best-seller">Best Seller</span>
+                </div>
+                <div class="card-content">
+                    <div class="card-category">Money Gift</div>
+                    <h3 class="card-title">Buket Sky Blue</h3>
+                    <div class="card-price">Rp45.000</div>
+                    <div class="card-rating">
+                        <div class="stars">★★★★★</div>
+                        <div class="rating-count">142 ulasan</div>
+                    </div>
+                    <p class="card-description">Buket uang dengan desain sky blue yang memukau dan eksklusif. Simbol kebebasan dan impian yang tinggi untuk orang terkasih.</p>
+                    <button class="card-button" onclick="handleWhatsAppClick('Buket Sky Blue', 45000)">TANYAKAN SEKARANG</button>
+                </div>
+            </div>
+            
+            <!-- Buket Coklat - Rp 45.000 -->
+            <div class="card">
+                <div class="card-image" onclick="openModal(['img/coklat.jpg'], 'Buket Chocolate', 45000)">
+                    <img src="img/coklat.jpg" alt="Buket Chocolate">
+                </div>
+                <div class="card-content">
+                    <div class="card-category">Money Gift</div>
+                    <h3 class="card-title">Buket Chocolate</h3>
+                    <div class="card-price">Rp45.000</div>
+                    <div class="card-rating">
+                        <div class="stars">★★★★☆</div>
+                        <div class="rating-count">106 ulasan</div>
+                    </div>
+                    <p class="card-description">Buket uang dengan nuansa coklat yang hangat dan manis. Menggabungkan kekayaan dengan kehangatan cinta untuk hadiah sempurna.</p>
+                    <button class="card-button" onclick="handleWhatsAppClick('Buket Chocolate', 45000)">TANYAKAN SEKARANG</button>
+                </div>
+            </div>
+            
+            <!-- Buket Cokok - Rp 60.000 -->
+            <div class="card">
+                <div class="card-image" onclick="openModal(['img/cokok.jpg'], 'Buket Royal Brown', 60000)">
+                    <img src="img/cokok.jpg" alt="Buket Royal Brown">
+                    <span class="badge limited">Premium</span>
+                </div>
+                <div class="card-content">
+                    <div class="card-category">Money Gift</div>
+                    <h3 class="card-title">Buket Royal Brown</h3>
+                    <div class="card-price">Rp60.000</div>
+                    <div class="card-rating">
+                        <div class="stars">★★★★★</div>
+                        <div class="rating-count">98 ulasan</div>
+                    </div>
+                    <p class="card-description">Buket uang premium dengan desain coklat eksklusif yang mewah. Hadiah istimewa untuk momen-momen paling berharga dalam hidup.</p>
+                    <button class="card-button" onclick="handleWhatsAppClick('Buket Royal Brown', 60000)">TANYAKAN SEKARANG</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Back to Main Button -->
+    <button class="back-button" onclick="goBack()">
+        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+    </button>
+    
+    <!-- Notification -->
+    <div id="notification" class="notification">
+        <div class="notification-icon">
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="white">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.149-.67.149-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372s-1.04 1.016-1.04 2.479 1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414-.074-.123-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+            </svg>
+        </div>
+        <div class="notification-text">
+            <div class="notification-title">Menghubungi WhatsApp...</div>
+            <div class="notification-message">Sedang membuka WhatsApp untuk mengirim pesan</div>
+        </div>
+    </div>
+    
+    <!-- Modal for Image Carousel -->
+    <div id="imageModal" class="modal" onclick="closeModalOnBackground(event)">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <div class="image-carousel">
+                <button class="carousel-nav carousel-prev" onclick="changeSlide(-1)">❮</button>
+                <button class="carousel-nav carousel-next" onclick="changeSlide(1)">❯</button>
+                <div class="carousel-container" id="carouselContainer">
+                    <!-- Images will be dynamically added here -->
+                </div>
+                <div class="carousel-indicators" id="carouselIndicators">
+                    <!-- Indicators will be dynamically added here -->
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        let currentImages = [];
+        let currentSlideIndex = 0;
+        let touchStartX = 0;
+        let touchEndX = 0;
+        let currentProductName = '';
+        let currentProductPrice = 0;
+        
+        // Function to handle WhatsApp click with notification
+        function handleWhatsAppClick(productName, productPrice) {
+            // Show notification
+            const notification = document.getElementById('notification');
+            notification.classList.add('show');
+            
+            // Open WhatsApp after a short delay
+            setTimeout(() => {
+                const phoneNumber = "6285795939763";
+                const message = `Halo Blooming Memories, saya tertarik dengan ${productName} (Rp${productPrice.toLocaleString('id-ID')}). Apakah masih tersedia? Saya mau pesan 🙏`;
+                const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+                window.open(url, '_blank');
+                
+                // Hide notification after 3 seconds
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }, 1000);
+        }
+        
+        // Function to open modal with carousel
+        function openModal(images, productName, productPrice) {
+            currentImages = images;
+            currentSlideIndex = 0;
+            currentProductName = productName;
+            currentProductPrice = productPrice;
+            
+            const modal = document.getElementById('imageModal');
+            const container = document.getElementById('carouselContainer');
+            const indicators = document.getElementById('carouselIndicators');
+            
+            // Clear previous content
+            container.innerHTML = '';
+            indicators.innerHTML = '';
+            
+            // Add images to carousel
+            images.forEach((imageSrc, index) => {
+                const img = document.createElement('img');
+                img.src = imageSrc;
+                img.alt = `${productName} ${index + 1}`;
+                img.className = 'carousel-image';
+                container.appendChild(img);
+                
+                // Add indicator
+                const indicator = document.createElement('div');
+                indicator.className = 'indicator';
+                if (index === 0) indicator.classList.add('active');
+                indicator.onclick = () => goToSlide(index);
+                indicators.appendChild(indicator);
+            });
+            
+            modal.style.display = 'block';
+            updateCarousel();
+            
+            // Add touch event listeners
+            const carousel = document.querySelector('.image-carousel');
+            carousel.addEventListener('touchstart', handleTouchStart, false);
+            carousel.addEventListener('touchend', handleTouchEnd, false);
+        }
+        
+        // Function to close modal
+        function closeModal() {
+            document.getElementById('imageModal').style.display = 'none';
+            
+            // Remove touch event listeners
+            const carousel = document.querySelector('.image-carousel');
+            carousel.removeEventListener('touchstart', handleTouchStart);
+            carousel.removeEventListener('touchend', handleTouchEnd);
+        }
+        
+        // Function to close modal when clicking background
+        function closeModalOnBackground(event) {
+            if (event.target === document.getElementById('imageModal')) {
+                closeModal();
+            }
+        }
+        
+        // Function to change slide
+        function changeSlide(direction) {
+            currentSlideIndex += direction;
+            if (currentSlideIndex >= currentImages.length) {
+                currentSlideIndex = 0;
+            } else if (currentSlideIndex < 0) {
+                currentSlideIndex = currentImages.length - 1;
+            }
+            updateCarousel();
+        }
+        
+        // Function to go to specific slide
+        function goToSlide(index) {
+            currentSlideIndex = index;
+            updateCarousel();
+        }
+        
+        // Function to update carousel position
+        function updateCarousel() {
+            const container = document.getElementById('carouselContainer');
+            const indicators = document.querySelectorAll('.indicator');
+            
+            container.style.transform = `translateX(-${currentSlideIndex * 100}%)`;
+            
+            // Update indicators
+            indicators.forEach((indicator, index) => {
+                if (index === currentSlideIndex) {
+                    indicator.classList.add('active');
+                } else {
+                    indicator.classList.remove('active');
+                }
+            });
+        }
+        
+        // Touch event handlers for swipe
+        function handleTouchStart(event) {
+            touchStartX = event.touches[0].clientX;
+        }
+        
+        function handleTouchEnd(event) {
+            touchEndX = event.changedTouches[0].clientX;
+            handleSwipe();
+        }
+        
+        function handleSwipe() {
+            const swipeThreshold = 50;
+            const diff = touchStartX - touchEndX;
+            
+            if (Math.abs(diff) > swipeThreshold) {
+                if (diff > 0) {
+                    // Swipe left - next slide
+                    changeSlide(1);
+                } else {
+                    // Swipe right - previous slide
+                    changeSlide(-1);
+                }
+            }
+        }
+        
+        // Close modal when pressing Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                closeModal();
+            }
+        });
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(event) {
+            if (document.getElementById('imageModal').style.display === 'block') {
+                if (event.key === 'ArrowLeft') {
+                    changeSlide(-1);
+                } else if (event.key === 'ArrowRight') {
+                    changeSlide(1);
+                }
+            }
+        });
+        
+        // Create dynamic bubbles
+        function createBubble() {
+            const bubble = document.createElement('div');
+            bubble.className = 'bubble';
+            const size = Math.random() * 60 + 20;
+            bubble.style.width = size + 'px';
+            bubble.style.height = size + 'px';
+            bubble.style.left = Math.random() * 100 + '%';
+            bubble.style.animationDelay = Math.random() * 5 + 's';
+            bubble.style.animationDuration = Math.random() * 10 + 10 + 's';
+            document.body.appendChild(bubble);
+            
+            // Remove bubble after animation
+            setTimeout(() => {
+                bubble.remove();
+            }, 20000);
+        }
+        
+        // Create bubbles periodically
+        setInterval(createBubble, 3000);
+        
+        // Add parallax effect on mouse move
+        document.addEventListener('mousemove', (e) => {
+            const floatingElements = document.querySelectorAll('.floating-element');
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            
+            floatingElements.forEach((element, index) => {
+                const speed = (index + 1) * 10;
+                element.style.transform = `translate(${x * speed}px, ${y * speed}px)`;
+            });
+        });
+        
+        // Function to go back to main page
+        function goBack() {
+            window.location.href = "https://bit.ly/blooris";
+        }
+    </script>
+</body>
+</html>
